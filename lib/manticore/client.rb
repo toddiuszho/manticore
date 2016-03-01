@@ -428,10 +428,11 @@ module Manticore
           encoding = minimum_encoding_for options[:params].to_s
           req.set_entity UrlEncodedFormEntity.new(pairs, encoding)
         elsif options[:body]
-          if options[:body].encoding == Encoding::ASCII_8BIT
-            req.set_entity ByteArrayEntity.new(options[:body].to_java_bytes)
+          s_body = options[:body].to_s
+          if s_body.encoding == Encoding::ASCII_8BIT
+            req.set_entity ByteArrayEntity.new(s_body.to_java_bytes)
           else
-            req.set_entity StringEntity.new(options[:body], minimum_encoding_for(options[:body]))
+            req.set_entity StringEntity.new(s_body, minimum_encoding_for(s_body))
           end
         elsif options[:entity]
           req.set_entity options[:entity]
